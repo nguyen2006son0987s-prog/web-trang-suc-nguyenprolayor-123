@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NguyenProlayor - Tinh Hoa Trang Sức</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { gold: '#D4AF37', dark: '#1A1A1A', light: '#F5F5F5' },
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .toast { transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+        .product-card:hover .btn-add { opacity: 1; transform: translateY(0) translateX(-50%); }
+        .product-img, .col-img { transition: transform 0.7s ease; }
+        .product-card:hover .product-img, .group:hover .col-img { transform: scale(1.1); }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fadeInUp 1s ease-out forwards; }
+    </style>
+</head>
+<body class="font-sans text-dark bg-white flex flex-col min-h-screen">
+
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-serif font-bold tracking-tighter">Nguyenprolayor<span class="text-gold">.</span></a>
+            
+            <div class="hidden md:flex space-x-8 font-medium text-sm uppercase tracking-wide">
+                <a href="index.html" class="text-gold transition">Trang chủ</a>
+                <a href="shop.html" class="hover:text-gold transition">Cửa hàng</a>
+                <a href="collection.html" class="hover:text-gold transition">Bộ sưu tập</a>
+                <a href="about.html" class="hover:text-gold transition">Về chúng tôi </a>
+            </div>
+
+            <div class="flex items-center">
+                
+                <button id="search-btn" class="text-xl hover:text-gold mr-6 transition transform hover:scale-110">
+                    <i class="fas fa-search"></i>
+                </button>
+
+                <a href="checkout.html" class="relative cursor-pointer hover:text-gold transition group mr-6">
+                    <i class="fas fa-shopping-bag text-xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-gold text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center hidden shadow-sm">0</span>
+                </a>
+
+                <a id="user-account" href="login.html" class="relative cursor-pointer hover:text-gold transition group" title="Đăng nhập">
+                    <i class="fas fa-user text-xl"></i>
+                </a>
+
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-[500px] flex items-center justify-center text-center text-white bg-black overflow-hidden">
+        <div class="absolute inset-0 bg-black/40 z-10"></div>
+        <img src="images/chinh.jpg" class="absolute inset-0 w-full h-full object-cover animate-[pulse_10s_infinite]" alt="Banner">
+        <div class="relative z-20 px-4 animate-fade-in-up">
+            <p class="uppercase tracking-[0.3em] text-gold mb-3 text-xs md:text-sm font-semibold">Sang trọng & Tinh tế</p>
+            <h1 class="text-5xl md:text-7xl font-serif font-bold mb-6">Tinh Hoa Trang Sức Việt</h1>
+            <a href="#shop" class="inline-block bg-gold text-white px-8 py-3 uppercase tracking-widest text-xs font-bold hover:bg-white hover:text-gold transition duration-300">Mua Ngay</a>
+        </div>
+    </header>
+
+    <section id="collections" class="pt-16 container mx-auto px-6">
+        <div id="collection-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+    </section>
+
+    <section id="shop" class="py-16 container mx-auto px-6 flex-grow">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-serif font-bold">Sản Phẩm Nổi Bật</h2>
+            <div class="w-12 h-0.5 bg-gold mx-auto mt-4"></div>
+        </div>
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12"></div>
+    </section>
+
+    <section class="bg-light py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="font-serif text-2xl font-bold mb-4">Đăng Ký Nhận Tin</h3>
+            <p class="text-gray-500 mb-6 text-sm">Nhận thông báo về bộ sưu tập mới và ưu đãi độc quyền.</p>
+            <div class="max-w-md mx-auto flex">
+                <input type="email" placeholder="Email của bạn..." class="flex-1 px-4 py-2 border border-gray-300 focus:outline-none focus:border-gold text-sm">
+                <button class="bg-dark text-white px-6 py-2 uppercase text-xs font-bold hover:bg-gold transition">Đăng ký</button>
+            </div>
+        </div>
+    </section>
+
+    <footer id="footer" class="bg-dark text-white pt-16 pb-8 border-t border-gray-800">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+            <div>
+                <h4 class="text-2xl font-serif font-bold mb-6">NguyenProlayor<span class="text-gold">.</span></h4>
+                <p class="text-gray-400 text-sm leading-relaxed">Chúng tôi tạo ra những món trang sức không chỉ để đeo, mà để kể câu chuyện của riêng bạn với vẻ đẹp vượt thời gian.</p>
+            </div>
+            <div>
+                <h4 class="text-gold uppercase tracking-widest text-sm font-bold mb-6">Hỗ Trợ Khách Hàng</h4>
+                <ul class="space-y-3 text-sm text-gray-400">
+                    <li><a href="#" class="hover:text-gold transition">Hướng dẫn chọn size</a></li>
+                    <li><a href="#" class="hover:text-gold transition">Chính sách bảo hành</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-gold uppercase tracking-widest text-sm font-bold mb-6">Liên Hệ</h4>
+                <ul class="space-y-3 text-sm text-gray-400">
+                    <li class="flex items-center"><i class="fas fa-map-marker-alt w-6 text-gold"></i> Đường số 1 Đội Quyên, Cửa Nam , TP.Vinh</li>
+                    <li class="flex items-center"><i class="fas fa-phone w-6 text-gold"></i> 090 123 4567</li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-xs"><p>&copy; 2025 NguyenProlayor.</p></div>
+    </footer>
+
+    <div id="toast" class="fixed bottom-8 right-8 bg-white border-l-4 border-gold shadow-2xl p-4 transform translate-x-[200%] transition-transform z-50 flex items-center rounded-sm min-w-[300px]">
+        <div class="text-green-500 text-xl mr-3"><i class="fas fa-check-circle"></i></div>
+        <div><h4 class="font-bold text-sm">Thành công!</h4><p class="text-xs text-gray-500 mt-1" id="toast-msg">Đã thêm vào giỏ.</p></div>
+    </div>
+
+    <div id="search-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden flex flex-col items-center justify-center p-6 opacity-0 transition-opacity duration-300">
+        
+        <button id="close-search" class="absolute top-8 right-8 text-white text-4xl hover:text-gold transition transform hover:rotate-90 duration-300">&times;</button>
+        
+        <h2 class="text-white font-serif text-3xl mb-8 tracking-widest uppercase border-b-2 border-gold pb-2">Tìm Kiếm</h2>
+        
+        <div class="relative w-full max-w-3xl">
+            <input type="text" id="search-input" placeholder="Gõ tên sản phẩm bạn muốn tìm..." 
+               class="w-full bg-transparent border-2 border-gray-500 rounded-full text-white text-xl py-4 px-8 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold placeholder-gray-500 transition-all text-center">
+            <i class="fas fa-search absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+        </div>
+        
+        <div id="search-results" class="w-full max-w-2xl mt-8 max-h-[60vh] overflow-y-auto space-y-4 pr-2"></div>
+    </div>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>

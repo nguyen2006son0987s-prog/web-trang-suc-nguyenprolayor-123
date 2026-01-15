@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Toán - NguyenProlayor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { gold: '#D4AF37', dark: '#1A1A1A', light: '#F5F5F5' },
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans text-dark bg-white flex flex-col min-h-screen">
+    <nav class="border-b border-gray-100 py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-serif font-bold tracking-tighter">Nguyenprolayor<span class="text-gold">.</span></a>
+            <a href="index.html" class="text-sm hover:text-gold"><i class="fas fa-arrow-left mr-2"></i> Tiếp tục mua sắm</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-6 py-12 flex-grow">
+        <h1 class="text-3xl font-serif font-bold text-center mb-12">Thanh Toán</h1>
+        <form id="checkout-form" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div>
+                <h3 class="text-lg font-bold uppercase tracking-wide border-b pb-2 mb-6">Thông tin giao hàng</h3>
+                <div class="space-y-4">
+                    <input type="text" required placeholder="Họ và tên" class="w-full border p-3 text-sm focus:border-gold outline-none">
+                    <input type="tel" required placeholder="Số điện thoại" class="w-full border p-3 text-sm focus:border-gold outline-none">
+                    <input type="text" required placeholder="Địa chỉ nhận hàng" class="w-full border p-3 text-sm focus:border-gold outline-none">
+                    <textarea placeholder="Ghi chú đơn hàng" class="w-full border p-3 text-sm focus:border-gold outline-none"></textarea>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-8 h-fit">
+                <h3 class="text-lg font-bold uppercase tracking-wide border-b pb-2 mb-6">Đơn hàng của bạn</h3>
+                <div id="order-items" class="space-y-4 mb-6 max-h-60 overflow-y-auto"></div>
+                <div class="border-t pt-4 flex justify-between font-bold text-xl">
+                    <span>Tổng cộng</span>
+                    <span id="total-price" class="text-gold">0₫</span>
+                </div>
+                <button type="submit" class="w-full bg-dark text-white py-4 mt-8 font-bold uppercase hover:bg-gold transition">Đặt Hàng</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const container = document.getElementById('order-items');
+            let total = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-500">Giỏ hàng trống</p>';
+            } else {
+                cart.forEach(item => {
+                    total += item.price * item.quantity;
+                    container.innerHTML += `
+                        <div class="flex justify-between text-sm">
+                            <span>${item.name} <span class="text-gray-500">x${item.quantity}</span></span>
+                            <span class="font-bold">${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price * item.quantity)}</span>
+                        </div>`;
+                });
+            }
+            document.getElementById('total-price').innerText = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total);
+
+            document.getElementById('checkout-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Đặt hàng thành công! Chúng tôi sẽ liên hệ sớm.');
+                localStorage.removeItem('cart');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cửa Hàng - NguyenProlayor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gold: '#D4AF37', dark: '#1A1A1A', light: '#F5F5F5' }, fontFamily: { sans: ['Montserrat'], serif: ['Playfair Display'] } } } }
+    </script>
+    <style>
+        .product-card:hover .btn-add { opacity: 1; transform: translateY(0) translateX(-50%); }
+        .product-img, .col-img { transition: transform 0.7s ease; }
+        .product-card:hover .product-img, .group:hover .col-img { transform: scale(1.1); }
+        .active-filter { color: #D4AF37; font-weight: 600; border-right: 2px solid #D4AF37; }
+    </style>
+</head>
+<body class="font-sans text-dark bg-white flex flex-col min-h-screen">
+
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-serif font-bold tracking-tighter">NguyenProlayor<span class="text-gold">.</span></a>
+            
+            <div class="hidden md:flex space-x-8 font-medium text-sm uppercase tracking-wide">
+                <a href="index.html" class="hover:text-gold transition">Trang chủ</a>
+                <a href="shop.html" class="text-gold transition">Cửa hàng</a>
+                <a href="collection.html" class="hover:text-gold transition">Bộ sưu tập</a>
+                <a href="about.html" class="hover:text-gold transition">Về chúng tôi</a>
+            </div>
+
+            <div class="flex items-center">
+                <a href="checkout.html" class="relative cursor-pointer hover:text-gold transition group mr-6">
+                    <i class="fas fa-shopping-bag text-xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-gold text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center hidden shadow-sm">0</span>
+                </a>
+
+                <a id="user-account" href="login.html" class="relative cursor-pointer hover:text-gold transition group" title="Đăng nhập">
+                    <i class="fas fa-user text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-light py-10 text-center">
+        <h1 class="text-3xl font-serif font-bold mb-2">Cửa Hàng</h1>
+        <p class="text-gray-500 text-sm italic">Tinh hoa trang sức Việt</p>
+    </div>
+
+    <section id="collections" class="pt-12 container mx-auto px-6">
+        <div id="col-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+    </section>
+
+    <section class="py-12 container mx-auto px-6 flex flex-col md:flex-row gap-8 flex-grow">
+        <aside class="w-full md:w-1/5">
+            <h3 class="font-serif font-bold text-lg mb-4 border-b pb-2">Danh Mục</h3>
+            <ul class="space-y-2 text-sm text-gray-600" id="cat-list"></ul>
+        </aside>
+
+        <div class="w-full md:w-4/5">
+            <div class="flex justify-between mb-6">
+                <p class="text-sm text-gray-500" id="result-count">Hiển thị sản phẩm</p>
+                <select class="border p-1 text-sm rounded focus:outline-none focus:border-gold" onchange="sortProducts(this.value)">
+                    <option value="new">Mới nhất</option>
+                    <option value="price-asc">Giá tăng dần</option>
+                </select>
+            </div>
+            <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+    </section>
+
+    <footer id="footer" class="bg-dark text-white py-8 border-t border-gray-800 text-center text-sm mt-auto">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-left">
+            <div><h4 class="font-bold mb-4">NguyenProlayor<span class="text-gold">.</span></h4><p class="text-gray-400 text-xs">Vẻ đẹp vượt thời gian.</p></div>
+            <div><h4 class="text-gold font-bold mb-4">Hỗ Trợ</h4><ul class="space-y-2 text-xs text-gray-400"><li>Bảo hành</li><li>Đổi trả</li></ul></div>
+            <div><h4 class="text-gold font-bold mb-4">Liên Hệ</h4><p class="text-gray-400 text-xs">090 123 4567</p></div>
+        </div>
+        <p class="text-gray-500 text-xs pt-4 border-t border-gray-800">&copy; 2025 NguyenProlayor.</p>
+    </footer>
+
+    <script>
+        const shopCollections = [
+            { title: "Nhẫn Cao Cấp", img: "images/nhanccap.jpg" },
+            { title: "Dây Chuyền", img: "images/daycdnhan.jpg" },
+            { title: "Bông Tai", img: "images/bongtqru.jpg" }
+        ];
+
+        const shopProducts = [
+            { id: 1, name: "Nhẫn Kim Cương", cat: "ring", price: 15500000, img: "images/nhankc.jpg" },
+            { id: 2, name: "Dây Chuyền Ngọc", cat: "necklace", price: 8200000, img: "images/daychuyen.jpg" },
+            { id: 3, name: "Bông Tai Vàng", cat: "earring", price: 4500000, img: "images/bongtai.jpg" },
+            { id: 4, name: "Lắc Tay Luxury", cat: "bracelet", price: 12800000, img: "images/lactay.jpg" },
+            { id: 5, name: "Nhẫn Cưới Eternal", cat: "ring", price: 18900000, img: "images/nhancuoi.jpg" },
+            { id: 6, name: "Vòng Cổ Ruby", cat: "necklace", price: 22000000, img: "images/daychuyen2.jpg" }
+        ];
+
+        let currentCat = 'all';
+        let displayList = [...shopProducts];
+
+        const renderPrice = (p) => new Intl.NumberFormat('vi-VN', {style:'currency', currency:'VND'}).format(p);
+
+        function initShop() {
+            const colGrid = document.getElementById('col-grid');
+            if(colGrid) {
+                colGrid.innerHTML = shopCollections.map(c => `
+                    <div class="group relative h-40 overflow-hidden cursor-pointer shadow-sm rounded-sm">
+                        <img src="${c.img}" onerror="this.src='https://placehold.co/600x400?text=Collection'" class="col-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition"></div>
+                        <h3 class="absolute bottom-4 left-4 text-white font-serif font-bold text-lg">${c.title}</h3>
+                    </div>
+                `).join('');
+            }
+
+            const cats = [{id:'all', t:'Tất cả'}, {id:'ring', t:'Nhẫn'}, {id:'necklace', t:'Dây chuyền'}, {id:'earring', t:'Bông tai'}, {id:'bracelet', t:'Lắc tay'}];
+            const catList = document.getElementById('cat-list');
+            if(catList) {
+                catList.innerHTML = cats.map(c => 
+                    `<li class="cursor-pointer hover:text-gold p-2 ${c.id==='all'?'active-filter':''}" onclick="filter('${c.id}', this)">${c.t}</li>`
+                ).join('');
+            }
+
+            renderShopProducts();
+        }
+
+        function renderShopProducts() {
+            const grid = document.getElementById('grid');
+            if(grid) {
+                grid.innerHTML = displayList.map(p => `
+                    <div class="product-card group relative cursor-pointer">
+                        <div class="overflow-hidden mb-3 bg-gray-100 aspect-[4/5]">
+                            <img src="${p.img}" onerror="this.src='https://placehold.co/400x500?text=SP'" class="product-img w-full h-full object-cover">
+                            <button onclick="addToCart(${p.id})" class="btn-add absolute bottom-4 left-1/2 bg-white text-dark px-4 py-2 text-xs font-bold uppercase hover:bg-gold hover:text-white transition shadow opacity-0 transform translate-y-4 -translate-x-1/2 w-3/4">Thêm</button>
+                        </div>
+                        <h3 class="font-serif font-medium group-hover:text-gold truncate">${p.name}</h3>
+                        <p class="text-gold font-bold text-sm">${renderPrice(p.price)}</p>
+                    </div>
+                `).join('');
+                document.getElementById('result-count').innerText = `Hiển thị ${displayList.length} sản phẩm`;
+            }
+        }
+
+        function filter(id, el) {
+            currentCat = id;
+            displayList = id === 'all' ? shopProducts : shopProducts.filter(p => p.cat === id);
+            document.querySelectorAll('#cat-list li').forEach(e => e.classList.remove('active-filter'));
+            el.classList.add('active-filter');
+            renderShopProducts();
+        }
+
+        function sortProducts(val) {
+            if(val === 'price-asc') displayList.sort((a,b) => a.price - b.price);
+            else displayList.sort((a,b) => a.id - b.id);
+            renderShopProducts();
+        }
+
+        initShop();
+    </script>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
